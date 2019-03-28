@@ -20,9 +20,12 @@ stavbe$ID_KONSTRUKCIJE <- gsub("1221", "kovina",stavbe$ID_KONSTRUKCIJE)
 stavbe$ID_KONSTRUKCIJE <- gsub("1222", "drugo",stavbe$ID_KONSTRUKCIJE)
 stavbe$ID_KONSTRUKCIJE <- gsub("1223", "drugo",stavbe$ID_KONSTRUKCIJE)
 
-stavbe[["KO_SIFKO"]] <- sifre_ko[ match(stavbe[['KO_SIFKO']], sifre_ko[['KO_SIFKO']] ), "Obcina" ]
+stavbe[["KO_SIFKO"]] <- sifre_ko[ match(stavbe[['KO_SIFKO']], sifre_ko[['KO_SIFKO']] ),'Obcina' ]
 
-#uvoz kljucev
-kljuci <- read_csv2("kljuci.csv", locale=locale(encoding="cp1250"))
+#uvoz kljucev za dolocanjeranljivostnih razredov
+kljuc <- read_csv2("kljuci.csv", locale=locale(encoding="cp1250"))
 
-#nova tabela s podatki o obcinah, ranljivostnimi razredi (in kvadraturo)
+#nova tabela, dodamo se stolpec kvadratura, in jo uporabljamo v nadaljnje
+stavbe1 <- merge(stavbe, kvadratura, by = 'STA_SID')
+stavbe1 <- stavbe1[, -c(3)]
+names(stavbe1) <- c('Identifikator', ' ' , 'Leto_gradnje', 'Material', 'Povrsina')
