@@ -24,7 +24,7 @@ vzorec <- vzorec[,-c(3)]
 names(vzorec) <- c('Identifikator', 'Obcina', 'Ranljivostni_razred', 'Povrsina')
 
 #Pogrupiramo po obèinah in ranlivostnih razreih 
-tabela <- vzorec%>%group_by(Obcina, Ranljivostni_razred)%>%
-  summarise(Povrsina = sum(Povrsina), Stevilo = n()) %>% drop_na()
+tabela <- vzorec%>% drop_na()%>%group_by(Obcina, Ranljivostni_razred)%>%
+  summarise(Povrsina = sum(Povrsina), Stevilo = n()) 
 
 #pri obcinah mi ne dela crka C (v pravi kodi)
