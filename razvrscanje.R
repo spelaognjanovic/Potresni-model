@@ -3,9 +3,11 @@ library(dplyr)
 library(rvest)
 library(gsubfn)
 
-razvrstitev <- read_csv2("razvrstitev.csv", locale=locale(encoding="cp1250"))
+podatki <- read_csv2("razvrstitev.csv", locale=locale(encoding="cp1250"))
 
-regije <- read_csv2("regije.csv", locale=locale(encoding="cp1250"))
+
+
+potresi <- read_csv2("regije.csv", locale=locale(encoding="cp1250"))
 
 # Naslov, od koder pobiramo podatke
 link <- "https://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
@@ -23,3 +25,8 @@ tabela[[3]] <- tabela[[3]] %>% strapplyc("([0-9]+)") %>%
 
 # Odstranimo nekaj stolpcev
 tabela <- tabela[,-c(2,3,4,5,6,7,9)]
+
+
+
+#SIMULACIJA
+
