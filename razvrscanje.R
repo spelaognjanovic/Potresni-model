@@ -9,7 +9,7 @@ library(tidyr)
 
 
 podatki <- read.csv("obcine.csv", encoding="UTF-8")
-
+podatki[,1]=tolower(podatki[,1])
 
 potresi <- read_csv2("regije.csv", locale=locale(encoding="cp1250"))
 
@@ -30,8 +30,15 @@ tabela[[3]] <- tabela[[3]] %>% strapplyc("([0-9]+)") %>%
 
 # Odstranimo nekaj stolpcev
 tabela <- tabela[,-c(2,3,4,5,6,7,9)]
+tabela[,1]=tolower(tabela[,1])
 
-podatki <- capitalize(podatki$Obcina)
+#lepo rocno preimenujemo sentjur pri celju na -->sentjur
+podatki[c(129,130,131,132),c(1)] = tabela[c(172,172,172,172), c(1)]
+
+podatki$Regija=tabela$`Statisticna regija`[match(podatki$Obcina, tabela$`Ime obcine`)]
+
+podatki <- podatki%>%group_by(Regija,Ranljivostni_razredi) %>%
+  summarise(Povrsina = sum(Povrsina), Stevilo=sum(Stevilo))
 
 #SIMULACIJA
 
