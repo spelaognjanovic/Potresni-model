@@ -1,17 +1,28 @@
 require(readr)
 library(dplyr)
 library(tidyr)
+library(knitr)
+library(rvest)
+library(gsubfn)
+library(ggplot2)
+library(tidyr)
+
 
 #Uvoz podatkov, ki vsebujejo stevilko stavbe in njegovo povrsino
 kvadratura <- read_csv2("REN_SLO_delistavb_20181216.csv", locale=locale(encoding="cp1250"))
 kvadratura <- kvadratura%>%group_by(STA_SID)%>%summarise(M_2 = sum(NETO_TLORIS_POV_DST))
+kvadratura <- kvadratura%>%drop_na() #nic se ni zgodilo
+#rada bi se prestela st. stavb, ki imajo kvadraturo 0 -->pomanjkljivosti
 
-#uvoz sifer katastrskih obcin, za prevedbo na obcine
-sifre_ko <- read_csv2("sifre_ko.csv", locale=locale(encoding="cp1250"))
+#uvoz sifer katastrskih obcin, za prevedbo na obcine DIREK IZ LINKA
+link <- "http://cen.gov.si/JavniVpogled/help/KO.htm"
+stran <- html_session(link) %>% read_html()
 
-#poskus stetja obcin, jih je le 46 v bazi, ker recimo Drg spada pod SG
-STEVILO<- sifre_ko%>%group_by(Obcina)%>%summarise(Stevilo = n())
-stevilo2 <- STEVILO%>%summarise(Stevilo= sum(Stevilo))
+katastrske <- stran %>% html_nodes(xpath="//table[@class='LIST']") %>%
+  .[[1]] %>% html_table()
+
+katastrske <- katastrske[-c(1),-c(2)]
+names(katastrske) <- c('KO_SIFKO', 'Obcina')
 
 #uvoz datoteke s podatki o stavbah (leto izgradnje, konstrukcija)
 stavbe <- read_csv2("REN_SLO_stavbe_20181216.csv", locale=locale(encoding="cp1250"))
@@ -25,27 +36,22 @@ stavbe$ID_KONSTRUKCIJE <- gsub("1221", "C",stavbe$ID_KONSTRUKCIJE)
 stavbe$ID_KONSTRUKCIJE <- gsub("1222", "D",stavbe$ID_KONSTRUKCIJE)
 stavbe$ID_KONSTRUKCIJE <- gsub("1223", "D",stavbe$ID_KONSTRUKCIJE)
 
-#zanima me, ce je isto st. sifer za katasterske obcine kot v sifre:ko->torj 2696 (bi mogo bit rezultat)
-#preizkusi
-STEVILO_STAVBE <- stavbe%>%group_by(KO_SIFO)%>%summarise(Stevilo= n())
-stevilo_stavbe <- STEVILO_STAVBE%>%summarise(Stevilo = sum(Stevilo))
-
 #Prekodiraj sifre katastrskih obcin v obcine s pomocjo tabele sifre_ko
-stavbe$Obcina=sifre_ko$Obcina[match(stavbe$KO_SIFKO,sifre_ko$KO_SIFKO)]
-stavbe <- stavbe[, -c(2,3,4)]
+stavbe$Obcina=katastrske$Obcina[match(stavbe$KO_SIFKO,katastrske$KO_SIFKO)]
+stavbe <- stavbe[, -c(2,3,4)]%>%drop_na()
 
 #uvoz kljucev za dolocanjeranljivostnih razredov
-#kljuc <- read_csv2("kljuci.csv", locale=locale(encoding="cp1250"))
+kljuc <- read_csv2("kljuci.csv", locale=locale(encoding="cp1250"))
 
 #nova tabela, dodamo se stolpec kvadratura, in jo uporabljamo v nadaljnje
 stavbe <- merge(stavbe, kvadratura, by = 'STA_SID')
 
 names(stavbe) <- c('Identifikator','Ranljivostni_razredi','Obcina', 'Povrsina')
 
-#poskus tudi dobim 46 obcin 
-poskus<- stavbe%>%group_by(Obcina)%>%summarise((Stevilo=n()))
+stavbe<- stavbe%>%drop_na() #se enx za ziher XD
 
-#pogrupiranje po obcinah in ranlj razredih..problem ker ne sesteje povrsine? ali prevelika stevilka?
+#pogrupiranje po obcinah in ranlj razredih in DELUJE!
 po_obcinah <- stavbe%>%group_by(Obcina, Ranljivostni_razredi)%>%
   summarise(Povrsina = sum(Povrsina), Stevilo = n())
 
+write_csv(po_obcinah, "obcine.csv", na="")

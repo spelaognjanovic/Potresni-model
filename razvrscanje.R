@@ -2,12 +2,17 @@ require(readr)
 library(dplyr)
 library(rvest)
 library(gsubfn)
+library(knitr)
+library(rvest)
+library(ggplot2)
+library(tidyr)
 
-podatki <- read_csv2("razvrstitev.csv", locale=locale(encoding="cp1250"))
 
+podatki <- read.csv("obcine.csv", encoding="UTF-8")
 
 
 potresi <- read_csv2("regije.csv", locale=locale(encoding="cp1250"))
+
 
 # Naslov, od koder pobiramo podatke
 link <- "https://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
@@ -26,7 +31,7 @@ tabela[[3]] <- tabela[[3]] %>% strapplyc("([0-9]+)") %>%
 # Odstranimo nekaj stolpcev
 tabela <- tabela[,-c(2,3,4,5,6,7,9)]
 
-
+podatki <- capitalize(podatki$Obcina)
 
 #SIMULACIJA
 
