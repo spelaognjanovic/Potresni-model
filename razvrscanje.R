@@ -40,9 +40,15 @@ podatki$Regija=tabela$`Statisticna regija`[match(podatki$Obcina, tabela$`Ime obc
 podatki <- podatki%>%group_by(Regija,Ranljivostni_razredi) %>%
   summarise(Povrsina = sum(Povrsina), Stevilo=sum(Stevilo))
 
+#trik, da lahko matcham na cifre in mi preimenuje regije, da bodo v obeh tabelah enako
 podatki$cifre <-c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12)
 
+potresi$cifre <- c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12)
 
-#potresi$cifre <- c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12)
+potresi$Regija=podatki$Regija[match(potresi$cifre,podatki$cifre)]
+#se pobrisem cifre
+podatki<-podatki[,-c(5)]
+potresi <-potresi[,-c(4)]
+
 #SIMULACIJA
 
