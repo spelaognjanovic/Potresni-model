@@ -53,22 +53,42 @@ potresi <-potresi[,-c(4)]
 #SIMULACIJA
 
 #ce zelim obdovje 10 let, potem samo vse parametre pomnozim *10
-#sedaj so ocenjeni na eno leto
+#ker so sedaj ocenjeni na eno leto
 
 potresi$`Ocenjen parameter` = potresi$`Ocenjen parameter` * 10
 
-#stopnja_7 <- podatki%>%group_by(Regija)%>%summarise(Stevilo = sum(Stevilo))
-#stopnja_7 <- stopnja_7[,-c(2)]
+potresi$'P(x=0)' = dpois(x=0, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=1)'=dpois(x=1, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=2)'=dpois(x=2, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=3)'=dpois(x=3, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=4)'=dpois(x=4, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=5)'=dpois(x=5, lambda= potresi$`Ocenjen parameter`)
 
-potresi$'0' = dpois(x=0, lambda= potresi$`Ocenjen parameter`)
-potresi$'1'=dpois(x=1, lambda= potresi$`Ocenjen parameter`)
-potresi$'2'=dpois(x=2, lambda= potresi$`Ocenjen parameter`)
-potresi$'3'=dpois(x=3, lambda= potresi$`Ocenjen parameter`)
-potresi$'4'=dpois(x=4, lambda= potresi$`Ocenjen parameter`)
-potresi$'5'=dpois(x=5, lambda= potresi$`Ocenjen parameter`)
+#za tem sledi pricakovana skoda
 
-#ok zdej bi rada zmnozila vse verjetnosti v eni regiji, da dobim skupno verjetnost
-verjetnosti_skupaj <- potresi[,-c(2,3)]
-#verjetnosti_skupaj <- verjetnosti_skupaj%>%group_by(Regija),mul
+#SKODA PRI STOPNJI 6
+podatki$'skoda_6'=podatki$Povrsina * c((0.25*0.04 + 0.05*0.09), 0.1*0.04, 0, 0)
+#(B*(0.25*0.04 + 0.05*0.09) + C*0.1*0.04 + D*0 + E*0) *verj.potresa 6
 
-#za tem sledi skoda -pricakovana skoda
+#SKODA PRI STOPNJI 7
+podatki$'skoda_7'=podatki$Povrsina * c((0.35*0.04 + 0.30*0.09 + 0.10*0.2), 0.1*0.04, 0, 0)
+#(B*(0.35*0.04 + 0.30*0.09 + 0.10*0.2) + C*0.10*0.04 + D*0 + E*0)*verj.potresa 7
+
+#SKODA PRI STOPNJI 8
+podatki$'skoda_8'=podatki$Povrsina * c((0.25*0.04 + 0.35*0.09 + 0.30*0.2 + 0.1*0.4), (0.35*0.04 + 0.3*0.09 + 0.1*0.2),
+                                       (0.3*0.04 + 0.1*0.09), 0)
+#(B*(0.25*0.04 + 0.35*0.09 + 0.30*0.2 + 0.1*0.4) + C*(0.35*0.04 + 0.3*0.09 + 0.1*0.2) +
+# + D*(0.3*0.04 + 0.1*0.09) + E*0)*verj.potresa 8
+
+#SKODA PRI STOPNJI 9
+podatki$'skoda_9'=podatki$Povrsina * c((0.25*0.09 + 0.35*0.2 + 0.3*0.4 + 0.1*0.8), (0.25*0.04 + 0.35*0.09 + 0.30*0.2+ 0.10*0.4),
+                                       (0.35*0.04 + 0.3*0.09 + 0.1*0.2), (0.3*0.04 + 0.10*0.09))
+#(B*(0.25*0.09 + 0.35*0.2 + 0.3*0.4 + 0.1*0.8) + c*(0.25*0.04 + 0.35*0.09 + 0.30*0.2+ 0.10*0.4)+
+#+ D*(0.35*0.04 + 0.3*0.09 + 0.1*0.2) + E*(0.3*0.04 + 0.10*0.09))*verj.potresa 9
+
+transponiranka <-t(potresi)
+
+skoda_regije <- podatki%>%group_by(Regija)%>%summarise(Skoda6=sum(skoda_6),Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
+                                                       Skoda9=sum(skoda_9))
+#pomnozimo se z verjetnostmi da potresi teh stopenj sploh nastopijo
+ricakovana_skoda <- potresi$`P(x=1)` * 
