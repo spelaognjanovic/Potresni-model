@@ -52,3 +52,23 @@ potresi <-potresi[,-c(4)]
 
 #SIMULACIJA
 
+#ce zelim obdovje 10 let, potem samo vse parametre pomnozim *10
+#sedaj so ocenjeni na eno leto
+
+potresi$`Ocenjen parameter` = potresi$`Ocenjen parameter` * 10
+
+#stopnja_7 <- podatki%>%group_by(Regija)%>%summarise(Stevilo = sum(Stevilo))
+#stopnja_7 <- stopnja_7[,-c(2)]
+
+potresi$'0' = dpois(x=0, lambda= potresi$`Ocenjen parameter`)
+potresi$'1'=dpois(x=1, lambda= potresi$`Ocenjen parameter`)
+potresi$'2'=dpois(x=2, lambda= potresi$`Ocenjen parameter`)
+potresi$'3'=dpois(x=3, lambda= potresi$`Ocenjen parameter`)
+potresi$'4'=dpois(x=4, lambda= potresi$`Ocenjen parameter`)
+potresi$'5'=dpois(x=5, lambda= potresi$`Ocenjen parameter`)
+
+#ok zdej bi rada zmnozila vse verjetnosti v eni regiji, da dobim skupno verjetnost
+verjetnosti_skupaj <- potresi[,-c(2,3)]
+#verjetnosti_skupaj <- verjetnosti_skupaj%>%group_by(Regija),mul
+
+#za tem sledi skoda -pricakovana skoda
