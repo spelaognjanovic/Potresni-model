@@ -68,27 +68,38 @@ potresi$'P(x=5)'=dpois(x=5, lambda= potresi$`Ocenjen parameter`)
 
 #SKODA PRI STOPNJI 6
 podatki$'skoda_6'=podatki$Povrsina * c((0.25*0.04 + 0.05*0.09), 0.1*0.04, 0, 0)
-#(B*(0.25*0.04 + 0.05*0.09) + C*0.1*0.04 + D*0 + E*0) *verj.potresa 6
 
 #SKODA PRI STOPNJI 7
 podatki$'skoda_7'=podatki$Povrsina * c((0.35*0.04 + 0.30*0.09 + 0.10*0.2), 0.1*0.04, 0, 0)
-#(B*(0.35*0.04 + 0.30*0.09 + 0.10*0.2) + C*0.10*0.04 + D*0 + E*0)*verj.potresa 7
 
 #SKODA PRI STOPNJI 8
 podatki$'skoda_8'=podatki$Povrsina * c((0.25*0.04 + 0.35*0.09 + 0.30*0.2 + 0.1*0.4), (0.35*0.04 + 0.3*0.09 + 0.1*0.2),
                                        (0.3*0.04 + 0.1*0.09), 0)
-#(B*(0.25*0.04 + 0.35*0.09 + 0.30*0.2 + 0.1*0.4) + C*(0.35*0.04 + 0.3*0.09 + 0.1*0.2) +
-# + D*(0.3*0.04 + 0.1*0.09) + E*0)*verj.potresa 8
 
 #SKODA PRI STOPNJI 9
 podatki$'skoda_9'=podatki$Povrsina * c((0.25*0.09 + 0.35*0.2 + 0.3*0.4 + 0.1*0.8), (0.25*0.04 + 0.35*0.09 + 0.30*0.2+ 0.10*0.4),
                                        (0.35*0.04 + 0.3*0.09 + 0.1*0.2), (0.3*0.04 + 0.10*0.09))
-#(B*(0.25*0.09 + 0.35*0.2 + 0.3*0.4 + 0.1*0.8) + c*(0.25*0.04 + 0.35*0.09 + 0.30*0.2+ 0.10*0.4)+
-#+ D*(0.35*0.04 + 0.3*0.09 + 0.1*0.2) + E*(0.3*0.04 + 0.10*0.09))*verj.potresa 9
 
-transponiranka <-t(potresi)
+
+
+#transponiranka <-t(potresi)
 
 skoda_regije <- podatki%>%group_by(Regija)%>%summarise(Skoda6=sum(skoda_6),Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
                                                        Skoda9=sum(skoda_9))
-#pomnozimo se z verjetnostmi da potresi teh stopenj sploh nastopijo
-ricakovana_skoda <- potresi$`P(x=1)` * 
+
+#Skodo po regijah pomnozimo s verjetnostjo iz tabele potresi, da se potres te stopnje v tej regiji spoh zgodi
+
+skoda_regije$Skoda6 = skoda_regije$Skoda6 * potresi$`P(x=1)`[seq(1, 48, 4)]
+
+skoda_regije$Skoda7 = skoda_regije$Skoda7 * potresi$`P(x=1)`[seq(2, 48, 4)]
+
+skoda_regije$Skoda8 = skoda_regije$Skoda8 * potresi$`P(x=1)`[seq(3, 48, 4)]
+
+skoda_regije$Skoda9 = skoda_regije$Skoda9 * potresi$`P(x=1)`[seq(4, 48, 4)]
+
+#sestevanje vrstic
+pricakovana_skoda <- skoda_regije[,-c(2,3,4,5)]
+
+skoda_regije <- skoda_regije[,-c(1)]
+
+pricakovana_skoda$pricak_skoda <- rowSums(skoda_regije)
