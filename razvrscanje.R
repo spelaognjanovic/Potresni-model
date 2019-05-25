@@ -63,6 +63,9 @@ potresi$'P(x=2)'=dpois(x=2, lambda= potresi$`Ocenjen parameter`)
 potresi$'P(x=3)'=dpois(x=3, lambda= potresi$`Ocenjen parameter`)
 potresi$'P(x=4)'=dpois(x=4, lambda= potresi$`Ocenjen parameter`)
 potresi$'P(x=5)'=dpois(x=5, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=6)'=dpois(x=6, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=7)'=dpois(x=7, lambda= potresi$`Ocenjen parameter`)
+potresi$'P(x=8)'=dpois(x=8, lambda= potresi$`Ocenjen parameter`)
 
 #za tem sledi pricakovana skoda
 
