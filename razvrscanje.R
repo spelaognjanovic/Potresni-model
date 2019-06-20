@@ -1,9 +1,8 @@
 require(readr)
 library(dplyr)
 library(rvest)
-library(gsubfn)
-library(knitr)
-library(rvest)
+#library(gsubfn)
+#library(knitr)
 #library(ggplot2)
 library(tidyr)
 
