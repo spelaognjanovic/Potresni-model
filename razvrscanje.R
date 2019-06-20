@@ -4,7 +4,7 @@ library(rvest)
 library(gsubfn)
 library(knitr)
 library(rvest)
-library(ggplot2)
+#library(ggplot2)
 library(tidyr)
 
 
