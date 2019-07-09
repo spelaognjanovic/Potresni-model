@@ -41,7 +41,6 @@ podatki <- podatki%>%group_by(Regija,Ranljivostni_razredi) %>%
 
 #trik, da lahko matcham na cifre in mi preimenuje regije, da bodo v obeh tabelah enako
 podatki$cifre <-c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12)
-
 potresi$cifre <- c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12)
 
 potresi$Regija=podatki$Regija[match(potresi$cifre,podatki$cifre)]
@@ -66,19 +65,14 @@ potresi$'P(x=4)'=dpois(x=4, lambda= potresi$`Ocenjen parameter`)
 
 #SKODA PRI STOPNJI 6
 podatki$'skoda_6'=podatki$Povrsina * c((0.25*0.04 + 0.05*0.09), 0.1*0.04, 0, 0)
-
 #SKODA PRI STOPNJI 7
 podatki$'skoda_7'=podatki$Povrsina * c((0.35*0.04 + 0.30*0.09 + 0.10*0.2), 0.1*0.04, 0, 0)
-
 #SKODA PRI STOPNJI 8
 podatki$'skoda_8'=podatki$Povrsina * c((0.25*0.04 + 0.35*0.09 + 0.30*0.2 + 0.1*0.4), (0.35*0.04 + 0.3*0.09 + 0.1*0.2),
                                        (0.3*0.04 + 0.1*0.09), 0)
-
 #SKODA PRI STOPNJI 9
 podatki$'skoda_9'=podatki$Povrsina * c((0.25*0.09 + 0.35*0.2 + 0.3*0.4 + 0.1*0.8), (0.25*0.04 + 0.35*0.09 + 0.30*0.2+ 0.10*0.4),
                                        (0.35*0.04 + 0.3*0.09 + 0.1*0.2), (0.3*0.04 + 0.10*0.09))
-
-
 
 #transponiranka <-t(potresi)
 #samo seštejem skode za vsako regijo posebej, vendar to zapišem v škoda regije
@@ -98,8 +92,6 @@ skoda_regije$Skoda7 = skoda_regije$Skoda7 * (2/3)
 #skoda_regije$Skoda8= c(skoda_regije$Skoda8)/c(skoda_regije$Stevilo)
 #skoda_regije$Skoda9= c(skoda_regije$Skoda9)/c(skoda_regije$Stevilo)
 
-
-
 #Skodo po regijah pomnozimo s verjetnostjo iz tabele potresi, da se potres te stopnje v tej regiji spoh zgodi 
 #ST. POTRESOV = 1
 ena <-  podatki%>%group_by(Regija)%>%summarise(Skoda6=sum(skoda_6) ,Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
@@ -108,49 +100,39 @@ ena$Skoda6 = ena$Skoda6 * (1/3)
 ena$Skoda7 = ena$Skoda7 * (2/3)
 
 ena$Skoda6 = ena$Skoda6 * potresi$`P(x=1)`[seq(1, 48, 4)]
-
 ena$Skoda7 = ena$Skoda7 * potresi$`P(x=1)`[seq(2, 48, 4)]
-
 ena$Skoda8 = ena$Skoda8 * potresi$`P(x=1)`[seq(3, 48, 4)]
-
 ena$Skoda9 = ena$Skoda9 * potresi$`P(x=1)`[seq(4, 48, 4)]
-
 #ST. POTRESOV = 2
+podatki <-  podatki%>%group_by(Regija)%>%summarise(povrsina=sum(Povrsina),Skoda6=sum(skoda_6) ,Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
+                                                   Skoda9=sum(skoda_9), Stevilo=sum(Stevilo))
+podatki$Skoda6 = podatki$Skoda6 * (1/3)
+podatki$Skoda7 = podatki$Skoda7 * (2/3)
 
-dva <- podatki%>%group_by(Regija)%>%summarise(Skoda6=sum(skoda_6) ,Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
-                                              Skoda9=sum(skoda_9), Stevilo=sum(Stevilo))
-dva$Skoda6 = dva$Skoda6 * (1/3)
-dva$Skoda7 = dva$Skoda7 * (2/3)
-
-dva$Skoda6 = dva$Skoda6 * potresi$`P(x=2)`[seq(1, 48, 4)]*2
-
-dva$Skoda7 = dva$Skoda7 * potresi$`P(x=2)`[seq(2, 48, 4)]*2
-
-dva$Skoda8 = dva$Skoda8 * potresi$`P(x=2)`[seq(3, 48, 4)]*2
-
-dva$Skoda9 = dva$Skoda9 * potresi$`P(x=2)`[seq(4, 48, 4)]*2
-
-names(dva) <- c("Regije","66","77","88","99","stevilo")
+dva <- podatki[,-c(3,4,5,6,7)]
+dva$'S66' = podatki$Skoda6 * potresi$`P(x=2)`[seq(1, 48, 4)]*2
+dva$'S67'=c(0,0)
+dva$'S68'=c(0,0)
+dva$'S69'=c(0,0)
+dva$'S77' = podatki$Skoda7 * potresi$`P(x=2)`[seq(2, 48, 4)]*2
+dva$'S78'=c(0,0)
+dva$'S79'=c(0,0)
+dva$'S88' = podatki$Skoda8 * potresi$`P(x=2)`[seq(3, 48, 4)]*2
+dva$'S89'=c(0,0)
+dva$'S99' = podatki$Skoda9 * potresi$`P(x=2)`[seq(4, 48, 4)]*2
 
 #ST. POTRESOV = 3
-tri <- podatki%>%group_by(Regija)%>%summarise(Skoda6=sum(skoda_6) ,Skoda7=sum(skoda_7),Skoda8=sum(skoda_8),
-                                              Skoda9=sum(skoda_9), Stevilo=sum(Stevilo))
-tri$Skoda6 = tri$Skoda6 * (1/3)
-tri$Skoda7 = tri$Skoda7 * (2/3)
+tri <-podatki[,-c(3,4,5,6,7)]
 
-tri$Skoda6 = tri$Skoda6 * potresi$`P(x=3)`[seq(1, 48, 4)]*3
+tri$'S666' = podatki$Skoda6 * potresi$`P(x=3)`[seq(1, 48, 4)]*3
+tri$'S777' = podatki$Skoda7 * potresi$`P(x=3)`[seq(2, 48, 4)]*3
+tri$'S888' = podatki$Skoda8 * potresi$`P(x=3)`[seq(3, 48, 4)]*3
+tri$'S999' = podatki$Skoda9 * potresi$`P(x=3)`[seq(4, 48, 4)]*3
 
-tri$Skoda7 = tri$Skoda7 * potresi$`P(x=3)`[seq(2, 48, 4)]*3
+#skoda_regije$ver6 <- c(potresi$`P(x=1)`[seq(1, 48, 4)])
+#skoda_regije$Skoda66 <- skoda_regije$Skoda6 * 2
+#skoda_regije$ver66 <- c(potresi$`P(x=2)`[seq(1, 48, 4)])
 
-tri$Skoda8 = tri$Skoda8 * potresi$`P(x=3)`[seq(3, 48, 4)]*3
-
-tri$Skoda9 = tri$Skoda9 * potresi$`P(x=3)`[seq(4, 48, 4)]*3
-
-names(tri) <- c("Regije","666","777","888","999","stevilo")
-
-skoda_regije$ver6 <- c(potresi$`P(x=1)`[seq(1, 48, 4)])
-skoda_regije$Skoda66 <- skoda_regije$Skoda6 * 2
-skoda_regije$ver66 <- c(potresi$`P(x=2)`[seq(1, 48, 4)])
 
 #sestevanje vrstic
 #pricakovana_skoda <- skoda_regije[,-c(2,3,4,5)]
