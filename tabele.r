@@ -23,7 +23,7 @@ verj<-c(v$E[1]*v$N[2]*v$N[3]*v$N[4],v$E[2]*v$N[1]*v$N[3]*v$N[4],v$E[3]*v$N[1]*v$
         v$D[2]*v$E[1]*v$N[3]*v$N[4],v$E[2]*v$E[1]*v$E[3]*v$N[4],v$E[2]*v$E[1]*v$N[3]*v$E[4],v$D[3]*v$E[1]*v$N[2]*v$N[4],
         v$E[3]*v$E[1]*v$N[2]*v$E[4],v$D[4]*v$E[1]*v$N[2]*v$N[3],
         
-        v$T[2]*v$N[1]*v$N[3]*v$N[4],v$D[2]*v$N[1]*v$E[3]*v$N[4],v$D[2]*v$N[1]*v$N[3]*v$E[4],v$D[3]*v$N[1]*v$D[2]*v$N[4],
+        v$T[2]*v$N[1]*v$N[3]*v$N[4],v$D[2]*v$N[1]*v$E[3]*v$N[4],v$D[2]*v$N[1]*v$N[3]*v$E[4],v$D[3]*v$N[1]*v$E[2]*v$N[4],
         v$E[3]*v$N[1]*v$E[2]*v$E[4],v$D[4]*v$N[1]*v$E[2]*v$N[3],
         
         v$T[3]*v$N[1]*v$N[2]*v$N[4],v$D[3]*v$N[1]*v$N[2]*v$E[4],v$D[4]*v$N[1]*v$N[2]*v$E[3],v$T[4]*v$N[1]*v$N[2]*v$N[3],
@@ -33,7 +33,7 @@ verj<-c(v$E[1]*v$N[2]*v$N[3]*v$N[4],v$E[2]*v$N[1]*v$N[3]*v$N[4],v$E[3]*v$N[1]*v$
         v$D[2]*v$D[1]*v$N[3]*v$N[4],v$E[2]*v$D[1]*v$E[3]*v$N[4],v$E[2]*v$D[1]*v$N[3]*v$E[4],v$D[3]*v$D[1]*v$N[2]*v$N[4],
         v$E[3]*v$D[1]*v$N[2]*v$E[4],v$D[4]*v$D[1]*v$N[2]*v$N[3],
         
-        v$T[2]*v$E[1]*v$N[3]*v$N[4],v$D[2]*v$E[1]*v$E[3]*v$N[4],v$D[2]*v$E[1]*v$N[3]*v$E[4],v$D[3]*v$E[1]*v$D[2]*v$N[4],
+        v$T[2]*v$E[1]*v$N[3]*v$N[4],v$D[2]*v$E[1]*v$E[3]*v$N[4],v$D[2]*v$E[1]*v$N[3]*v$E[4],v$D[3]*v$E[1]*v$E[2]*v$N[4],
         v$E[3]*v$E[1]*v$E[2]*v$E[4],v$D[4]*v$E[1]*v$E[2]*v$N[3],
         
         v$T[3]*v$E[1]*v$N[2]*v$N[4],v$D[3]*v$E[1]*v$N[2]*v$E[4],v$D[4]*v$E[1]*v$N[2]*v$E[3],v$T[4]*v$E[1]*v$N[2]*v$N[3],
@@ -42,7 +42,7 @@ verj<-c(v$E[1]*v$N[2]*v$N[3]*v$N[4],v$E[2]*v$N[1]*v$N[3]*v$N[4],v$E[3]*v$N[1]*v$
         v$S[2]*v$N[1]*v$N[3]*v$N[4],v$T[2]*v$N[1]*v$E[3]*v$N[4],v$T[2]*v$N[1]*v$N[3]*v$E[4],v$D[3]*v$N[1]*v$T[2]*v$N[4],
         v$E[3]*v$N[1]*v$D[2]*v$E[4],v$D[4]*v$N[1]*v$D[2]*v$N[3],
         
-        v$T[3]*v$N[1]*v$D[2]*v$N[4],v$D[3]*v$N[1]*v$D[2]*v$E[4],v$D[4]*v$N[1]*v$D[2]*v$E[3],v$T[4]*v$N[1]*v$D[2]*v$N[3],
+        v$T[3]*v$N[1]*v$E[2]*v$N[4],v$D[3]*v$N[1]*v$E[2]*v$E[4],v$D[4]*v$N[1]*v$E[2]*v$E[3],v$T[4]*v$N[1]*v$E[2]*v$N[3],
         
         
         v$S[3]*v$N[1]*v$N[2]*v$N[4],v$T[3]*v$N[1]*v$N[2]*v$E[4],v$D[4]*v$N[1]*v$N[2]*v$D[3],v$T[4]*v$N[1]*v$N[2]*v$E[3],
@@ -95,9 +95,9 @@ gorenjska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"
 gorenjska$verj=round(gorenjska$verj,digits = 7)
 gorenjska$pricakovana=round(gorenjska$pricakovana,digits = 1)
 
-Gorenjska <- ggplot(gorenjska, aes(x=log(skoda), y=verj))+geom_line(size = 0.05) + geom_point(size = 1.3, color="red")
+regija1 <- ggplot(gorenjska, aes(x=log(skoda), y=verj))+geom_line(size = 0.05) + geom_point(size = 1.3, color="red")
 
-show(Gorenjska)
+print(regija1)
 
 #vsak krog ko grem na novo regijo pobrišem prve 4 vrstice, da je koda za verjetnosti ista
 #verjetnosti <-verjetnosti[-c(1,2,3,4),]
