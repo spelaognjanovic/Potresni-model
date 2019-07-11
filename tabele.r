@@ -95,9 +95,21 @@ gorenjska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"
 gorenjska$verj=round(gorenjska$verj,digits = 7)
 gorenjska$pricakovana=round(gorenjska$pricakovana,digits = 1)
 
-regija1 <- ggplot(gorenjska, aes(x=log(skoda), y=verj))+geom_line(size = 0.05) + geom_point(size = 1.3, color="red")
+skoda2<-skoda**2
+
+skoda3 <- log(skoda)
+
+regija1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+geom_line(size = 0.05) + geom_point(size = 1.3, color="red")
 
 print(regija1)
+
+#lines(skoda3, predict(fit2, data.frame(x=skoda3)), col="green")
+#quadratic.model <-lm(verj ~ skoda + skoda2)
+#summary(quadratic.model)
+#timevalues <- seq(255555, 10685043, 50000)
+#predictedcounts <- predict(quadratic.model,list(skoda=timevalues, skoda2=timevalues^2))
+#plot(skoda, verj, pch=16, xlab = "skoda (s)", ylab = "verj", cex.lab = 1.3, col = "blue")
+#lines(timevalues, predictedcounts, col = "darkgreen", lwd = 3)
 
 #vsak krog ko grem na novo regijo pobrišem prve 4 vrstice, da je koda za verjetnosti ista
 #verjetnosti <-verjetnosti[-c(1,2,3,4),]
