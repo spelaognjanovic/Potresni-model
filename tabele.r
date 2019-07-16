@@ -98,18 +98,28 @@ gorenjska$pricakovana=round(gorenjska$pricakovana,digits = 1)
 skoda2<-skoda**2
 
 skoda3 <- log(skoda)
+#ggplot gorenjska
+Gorenjska1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
+print(Gorenjska1)
 
-regija1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+geom_line(size = 0.05) + geom_point(size = 1.3, color="red")
 
-print(regija1)
+#Najdi krivuljo, polinom, ki se točkam najbilj prilega
+fit<-lm(verj~poly(skoda3,2,intercept=FALSE))
+plot(skoda3,verj,pch=20,col="blue")
 
-#lines(skoda3, predict(fit2, data.frame(x=skoda3)), col="green")
-#quadratic.model <-lm(verj ~ skoda + skoda2)
-#summary(quadratic.model)
-#timevalues <- seq(255555, 10685043, 50000)
-#predictedcounts <- predict(quadratic.model,list(skoda=timevalues, skoda2=timevalues^2))
-#plot(skoda, verj, pch=16, xlab = "skoda (s)", ylab = "verj", cex.lab = 1.3, col = "blue")
-#lines(timevalues, predictedcounts, col = "darkgreen", lwd = 3)
+x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
+y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
+lines(x0, y0, col = 2)  ## add regression curve (colour: red)
+
+fit$coef
+
+C=0.008051705
+B=-0.163425465
+A=0.168264225
+
+x = seq(10,16,0.1)
+y <- A*(x**2) + B*x + C
+plot(x,y,type="l")
 
 #vsak krog ko grem na novo regijo pobrišem prve 4 vrstice, da je koda za verjetnosti ista
 #verjetnosti <-verjetnosti[-c(1,2,3,4),]
