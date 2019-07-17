@@ -9,6 +9,10 @@ skode <- read.csv("skoda_regije.csv", encoding="UTF-8")
 v <- read.csv("potresi.csv", encoding="UTF-8")
 names(v) <- c('regija','stopnja','parameter','N','E','D','T','S')
 
+#rabim za tabelo rezultati
+regije <-skode$Regija
+stevilo_stavb <-skode$Stevilo
+
 #nizi <- c("(0,0,0,6)","(0,0,0,7)","(0,0,0,8)","(0,0,0,9)","(0,0,6,6)")
 nizi <- c(6,7,8,9,66,67,68,69,77,78,79,88,89,99,666,667,668,669,677,678,679,688,689,699,777,778,779,788,789,799,888,889,899,999,
           6666,6667,6668,6669,6677,6678,6679,6688,6689,6699,6777,6778,6779,6788,6789,6799,6888,6889,6899,6999,
@@ -97,19 +101,19 @@ gorenjska$pricakovana=round(gorenjska$pricakovana,digits = 1)
 
 skoda2<-skoda**2
 
-#skoda3 <- log(skoda)
+skoda3 <- log(gorenjska$skoda)
 #ggplot gorenjska
-#Gorenjska1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
-#print(Gorenjska1)
+Gorenjska1 <- ggplot(gorenjska, aes(x=skoda3, y=gorenjska$verj))+ geom_point(size = 1.3, color="red")
+print(Gorenjska1)
 
 
 #Najdi krivuljo, polinom, ki se točkam najbilj prilega
-#fit<-lm(verj~poly(skoda3,2))
-#plot(skoda3,verj,pch=20,col="blue")
+fit<-lm(gorenjska$verj~poly(skoda3,3))
+plot(skoda3,gorenjska$verj,pch=20,col="blue")
 
-#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
+x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
+y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
+lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #fit$coef
 
@@ -258,6 +262,20 @@ pricakovana<- c(skoda)*c(verj)
 jugovzhodna <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= pricakovana)
 jugovzhodna$verj=round(jugovzhodna$verj,digits = 7)
 jugovzhodna$pricakovana=round(jugovzhodna$pricakovana,digits = 1)
+
+#GRAFI PORAZDELITEV
+skoda3 <- log(jugovzhodna$skoda)
+#ggplot gorenjska
+JugoV1<- ggplot(jugovzhodna, aes(x=skoda3, y=jugovzhodna$verj))+ geom_point(size = 1.3, color="red")
+print(JugoV1)
+
+#Najdi krivuljo, polinom, ki se točkam najbilj prilega
+#fit<-lm(jugovzhodna$verj~poly(skoda3,2))
+#plot(skoda3,osrednje$verj,pch=20,col="blue")
+
+#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
+#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
+#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #KOROSKA
 v <-v[-c(1,2,3,4),]
@@ -508,6 +526,12 @@ obalno.k <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"=
 obalno.k$verj=round(obalno.k$verj,digits = 7)
 obalno.k$pricakovana=round(obalno.k$pricakovana,digits = 1)
 
+#GRAFI PORAZDELITEV
+skoda3 <- log(obalno.k$skoda)
+#ggplot gorenjska
+ObalnoK <- ggplot(podravska, aes(x=skoda3, y=obalno.k$verj))+ geom_point(size = 1.3, color="red")
+print(ObalnoK)
+
 #OSREDNJESLOVENSKA
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
@@ -590,6 +614,20 @@ pricakovana<- c(skoda)*c(verj)
 osrednje <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= pricakovana)
 osrednje$verj=round(osrednje$verj,digits = 7)
 osrednje$pricakovana=round(osrednje$pricakovana,digits = 1)
+
+#GRAFI PORAZDELITEV
+skoda3 <- log(osrednje$skoda)
+#ggplot gorenjska
+Osrednjeslo1 <- ggplot(osrednje, aes(x=skoda3, y=osrednje$verj))+ geom_point(size = 1.3, color="red")
+print(Osrednjeslo1)
+
+#Najdi krivuljo, polinom, ki se točkam najbilj prilega
+fit<-lm(osrednje$verj~poly(skoda3,2))
+plot(skoda3,osrednje$verj,pch=20,col="blue")
+
+x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
+y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
+lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #PODRAVSKA
 v <-v[-c(1,2,3,4),]
@@ -674,6 +712,12 @@ podravska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"
 podravska$verj=round(podravska$verj,digits = 7)
 podravska$pricakovana=round(podravska$pricakovana,digits = 1)
 
+#GRAFI PORAZDELITEV
+skoda3 <- log(podravska$skoda)
+#ggplot gorenjska
+Podravska1 <- ggplot(podravska, aes(x=skoda3, y=podravska$verj))+ geom_point(size = 1.3, color="red")
+print(Podravska1)
+
 #POMURSKA
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
@@ -756,6 +800,20 @@ pricakovana<- c(skoda)*c(verj)
 pomurska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= pricakovana)
 pomurska$verj=round(pomurska$verj,digits = 7)
 pomurska$pricakovana=round(pomurska$pricakovana,digits = 1)
+
+#GRAFI PORAZDELITEV
+skoda3 <- log(pomurska$skoda)
+#ggplot gorenjska
+Pomurska1 <- ggplot(pomurska, aes(x=skoda3, y=pomurska$verj))+ geom_point(size = 1.3, color="red")
+print(Pomurska1)
+
+#Najdi krivuljo, polinom, ki se točkam najbilj prilega
+#fit<-lm(pomurska$verj~poly(skoda3,2))
+#plot(skoda3,pomurska$verj,pch=20,col="blue")
+
+#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
+#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
+#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #SAVINJSKA
 v <-v[-c(1,2,3,4),]
@@ -1009,7 +1067,7 @@ zasavska$pricakovana=round(zasavska$pricakovana,digits = 1)
 #GRAFI PORAZDELITEV
 skoda3 <- log(skoda)
 #ggplot gorenjska
-Gorenjska1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
+Osrednjeslo1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
 print(Gorenjska1)
 
 
@@ -1022,3 +1080,21 @@ y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
 lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 fit$coef
+
+#rezultati
+pricakovana<-c(sum(gorenjska$pricakovana),sum(goriska$pricakovana),sum(jugovzhodna$pricakovana),sum(koroska$pricakovana),
+               sum(notranjsko.k$pricakovana),sum(obalno.k$pricakovana),sum(osrednje$pricakovana),sum(podravska$pricakovana),
+               sum(pomurska$pricakovana),sum(savinjska$pricakovana),sum(spodnjeposavska$pricakovana),
+               sum(zasavska$pricakovana))
+
+enota <- c(pricakovana)/c(stevilo_stavb)
+
+varianca <- c(var(gorenjska$skoda),var(goriska$skoda),var(jugovzhodna$skoda),var(koroska$skoda),var(notranjsko.k$skoda),
+              var(obalno.k$skoda),var(osrednje$skoda),var(podravska$skoda),var(pomurska$skoda),var(savinjska$skoda),
+              var(spodnjeposavska$skoda),var(zasavska$skoda))
+
+st_odklon <- sqrt(varianca)
+
+rezultati <- data.frame("regija"= regije,"st_stavb"= stevilo_stavb, "pric_skoda"= pricakovana,
+                        "na_enoto"= enota, "var"= varianca,"sd"= st_odklon)
+
