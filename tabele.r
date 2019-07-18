@@ -176,8 +176,6 @@ goriska$pricakovana=round(goriska$pricakovana,digits = 1)
 #Goriska1 <- ggplot(goriska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
 #print(Goriska1)
 
-
-
 #JUGOVZHODNA
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
@@ -262,10 +260,10 @@ jugovzhodna$verj=round(jugovzhodna$verj,digits = 7)
 jugovzhodna$pricakovana=round(jugovzhodna$pricakovana,digits = 1)
 
 #GRAFI PORAZDELITEV
-skoda3 <- log(jugovzhodna$skoda)
+#skoda3 <- log(jugovzhodna$skoda)
 #ggplot gorenjska
-JugoV1<- ggplot(jugovzhodna, aes(x=skoda3, y=jugovzhodna$verj))+ geom_point(size = 1.3, color="red")
-print(JugoV1)
+#JugoV1<- ggplot(jugovzhodna, aes(x=skoda3, y=jugovzhodna$verj))+ geom_point(size = 1.3, color="red")
+#print(JugoV1)
 
 #Najdi krivuljo, polinom, ki se točkam najbilj prilega
 #fit<-lm(jugovzhodna$verj~poly(skoda3,2))
