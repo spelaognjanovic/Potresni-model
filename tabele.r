@@ -1095,3 +1095,5 @@ rezultati <- data.frame("regija"= regije,"st_stavb"= stevilo_stavb, "pric_skoda"
 rezultati$na_enoto=round(rezultati$na_enoto,digits = 3)
 rezultati$pric_skoda = round(rezultati$pric_skoda)
 rezultati$sd = round(rezultati$sd)
+
+rez1 <-
