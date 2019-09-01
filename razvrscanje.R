@@ -91,8 +91,3 @@ skoda_regije$Skoda8= round(skoda_regije$Skoda8, digits = 0)
 
 write_csv(skoda_regije, "skoda_regije.csv", na="")
 write_csv(potresi, "potresi.csv", na="")
-
-
-#sestevanje vrstic
-
-#pricakovana_skoda$pricak_skoda <- rowSums(skoda_regije)

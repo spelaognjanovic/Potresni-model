@@ -171,10 +171,10 @@ goriska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= 
 goriska$verj=round(goriska$verj,digits = 7)
 goriska$pricakovana=round(goriska$pricakovana,digits = 1)
 
-#skoda3 <- log(skoda)
+skoda3 <- log(goriska$skoda)
 #ggplot goriska, isto ko gorensjka, iste verjetnosti
-#Goriska1 <- ggplot(goriska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
-#print(Goriska1)
+Goriska1 <- ggplot(goriska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
+print(Goriska1)
 
 #JUGOVZHODNA
 v <-v[-c(1,2,3,4),]
@@ -356,6 +356,12 @@ koroska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= 
 koroska$verj=round(koroska$verj,digits = 7)
 koroska$pricakovana=round(koroska$pricakovana,digits = 1)
 
+#GRAFI PORAZDELITEV
+skoda3 <- log(koroska$skoda)
+#ggplot gorenjska
+Koroska1<- ggplot(koroska, aes(x=skoda3, y=koroska$verj))+ geom_point(size = 1.3, color="red")
+print(Koroska1)
+
 #NOTRANJSKO KRASKA
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
@@ -438,6 +444,12 @@ pricakovana<- c(skoda)*c(verj)
 notranjsko.k<- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= pricakovana)
 notranjsko.k$verj=round(notranjsko.k$verj,digits = 7)
 notranjsko.k$pricakovana=round(notranjsko.k$pricakovana,digits = 1)
+
+#GRAFI PORAZDELITEV
+skoda3 <- log(notranjsko.k$skoda)
+#ggplot gorenjska
+NotK1<- ggplot(notranjsko.k, aes(x=skoda3, y=notranjsko.k$verj))+ geom_point(size = 1.3, color="red")
+print(NotK1)
 
 #OBALNO KRAŠKA
 v <-v[-c(1,2,3,4),]
@@ -894,7 +906,12 @@ savinjska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"
 savinjska$verj=round(savinjska$verj,digits = 7)
 savinjska$pricakovana=round(savinjska$pricakovana,digits = 1)
 
-#SPODNJEPOSAVSKA
+skoda3 <- log(savinjska$skoda)
+#ggplot gorenjska
+Savinjska1<- ggplot(savinjska, aes(x=skoda3, y=savinjska$verj))+ geom_point(size = 1.3, color="red")
+print(Savinjska1)
+
+#SPODNJEPOSAVSKA - posavska
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
 verj<-c(v$E[1]*v$N[2]*v$N[3]*v$N[4],v$E[2]*v$N[1]*v$N[3]*v$N[4],v$E[3]*v$N[1]*v$N[2]*v$N[4],v$E[4]*v$N[1]*v$N[2]*v$N[3],
@@ -976,6 +993,10 @@ pricakovana<- c(skoda)*c(verj)
 spodnjeposavska <- data.frame("nizi"= nizi, "skoda"= skoda,"verj"= verj, "pricakovana"= pricakovana)
 spodnjeposavska$verj=round(spodnjeposavska$verj,digits = 7)
 spodnjeposavska$pricakovana=round(spodnjeposavska$pricakovana,digits = 1)
+#Graf porazdelitve
+skoda3 <- log(spodnjeposavska$skoda)
+Spodnje1<- ggplot(spodnjeposavska, aes(x=skoda3, y=spodnjeposavska$verj))+ geom_point(size = 1.3, color="red")
+print(Spodnje1)
 
 #ZASAVSKA
 v <-v[-c(1,2,3,4),]
@@ -1061,20 +1082,9 @@ zasavska$verj=round(zasavska$verj,digits = 7)
 zasavska$pricakovana=round(zasavska$pricakovana,digits = 1)
 
 #GRAFI PORAZDELITEV
-#skoda3 <- log(skoda)
-#ggplot gorenjska
-#Osrednjeslo1 <- ggplot(gorenjska, aes(x=skoda3, y=verj))+ geom_point(size = 1.3, color="red")
-#print(Gorenjska1)
-
-#Najdi krivuljo, polinom, ki se točkam najbilj prilega
-#fit<-lm(verj~poly(skoda3,2))
-#plot(skoda3,verj,pch=20,col="blue")
-
-#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
-
-#fit$coef
+skoda3 <- log(zasavska$skoda)
+Zasavska1 <- ggplot(zasavska, aes(x=skoda3, y=zasavska$verj))+ geom_point(size = 1.3, color="red")
+print(Zasavska1)
 
 #REZULTATI
 pricakovana<-c(sum(gorenjska$pricakovana),sum(goriska$pricakovana),sum(jugovzhodna$pricakovana),sum(koroska$pricakovana),
