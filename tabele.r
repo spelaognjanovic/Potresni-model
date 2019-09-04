@@ -104,25 +104,6 @@ skoda3 <- log(gorenjska$skoda)
 Gorenjska1 <- ggplot(gorenjska, aes(x=skoda3, y=gorenjska$verj))+ geom_point(size = 1.3, color="red")
 print(Gorenjska1)
 
-
-#Najdi krivuljo, polinom, ki se točkam najbilj prilega
-fit<-lm(gorenjska$verj~poly(skoda3,3))
-plot(skoda3,gorenjska$verj,pch=20,col="blue")
-
-x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-lines(x0, y0, col = 2)  ## add regression curve (colour: red)
-
-#fit$coef
-
-#C=0.008051705
-#B=-0.163425465
-#A=0.168264225
-
-#x = seq(10,16,0.1)
-#y <- A*(x**2) + B*x + C
-#plot(x,y,type="l")
-
 #vsak krog ko grem na novo regijo pobrišem prve 4 vrstice, da je koda za verjetnosti ista 
 #GORIŠKA
 v <-v[-c(1,2,3,4),]
@@ -264,14 +245,6 @@ jugovzhodna$pricakovana=round(jugovzhodna$pricakovana,digits = 1)
 #ggplot gorenjska
 #JugoV1<- ggplot(jugovzhodna, aes(x=skoda3, y=jugovzhodna$verj))+ geom_point(size = 1.3, color="red")
 #print(JugoV1)
-
-#Najdi krivuljo, polinom, ki se točkam najbilj prilega
-#fit<-lm(jugovzhodna$verj~poly(skoda3,2))
-#plot(skoda3,osrednje$verj,pch=20,col="blue")
-
-#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #KOROSKA
 v <-v[-c(1,2,3,4),]
@@ -629,14 +602,6 @@ osrednje$pricakovana=round(osrednje$pricakovana,digits = 1)
 #Osrednjeslo1 <- ggplot(osrednje, aes(x=skoda3, y=osrednje$verj))+ geom_point(size = 1.3, color="red")
 #print(Osrednjeslo1)
 
-#Najdi krivuljo, polinom, ki se točkam najbilj prilega
-#fit<-lm(osrednje$verj~poly(skoda3,2))
-#plot(skoda3,osrednje$verj,pch=20,col="blue")
-
-#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
-
 #PODRAVSKA
 v <-v[-c(1,2,3,4),]
 skode <- skode[-c(1),]
@@ -813,15 +778,6 @@ pomurska$pricakovana=round(pomurska$pricakovana,digits = 1)
 #skoda3 <- log(pomurska$skoda)
 #ggplot gorenjska
 #Pomurska1 <- ggplot(pomurska, aes(x=skoda3, y=pomurska$verj))+ geom_point(size = 1.3, color="red")
-#print(Pomurska1)
-
-#Najdi krivuljo, polinom, ki se točkam najbilj prilega
-#fit<-lm(pomurska$verj~poly(skoda3,2))
-#plot(skoda3,pomurska$verj,pch=20,col="blue")
-
-#x0 <- seq(min(skoda3), max(skoda3), length = 15)  ## prediction grid
-#y0 <- predict.lm(fit, newdata = list(skoda3 = x0))  ## predicted values
-#lines(x0, y0, col = 2)  ## add regression curve (colour: red)
 
 #SAVINJSKA
 v <-v[-c(1,2,3,4),]

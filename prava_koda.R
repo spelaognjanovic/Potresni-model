@@ -24,6 +24,9 @@ katastrske <- stran %>% html_nodes(xpath="//table[@class='LIST']") %>%
 katastrske <- katastrske[-c(1),-c(2)]
 names(katastrske) <- c('KO_SIFKO', 'Obcina')
 
+#vidimo, da je stevilo obcin 46
+#lo <- katastrske%>%group_by(Obcina)%>%summarise(Stevilo = n())
+
 #uvoz datoteke s podatki o stavbah (leto izgradnje, konstrukcija)
 stavbe <- read_csv2("REN_SLO_stavbe_20181216.csv", locale=locale(encoding="cp1250"))
 stavbe <- stavbe[,-c(3,4,5,7,8,9,10,11,13,14,15,16,18,19,20,21,22,23,24,25,26,27,28)]

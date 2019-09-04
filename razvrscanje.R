@@ -6,7 +6,6 @@ library(rvest)
 #library(ggplot2)
 library(tidyr)
 
-
 podatki <- read.csv("obcine.csv", encoding="UTF-8")
 podatki[,1]=tolower(podatki[,1])
 
